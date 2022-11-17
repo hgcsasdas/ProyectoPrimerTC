@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.InicioController">
+   <children>
+      <VBox layoutX="141.0" layoutY="107.0" prefHeight="186.0" prefWidth="318.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button id="iniciarSesion" fx:id="iniciarSesion" mnemonicParsing="false" onAction="#cambiarIniciarSesion" text="Iniciar Sesión">
+                     <cursor>
+                        <Cursor fx:constant="CROSSHAIR" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button id="Registrarse" fx:id="registrarse" mnemonicParsing="false" onAction="#cambiarRegistrarse" text="Registrarse" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
