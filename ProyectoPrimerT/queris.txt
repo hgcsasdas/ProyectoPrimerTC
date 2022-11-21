@@ -1,0 +1,11 @@
+create table `usuarios`(
+	idUsuarios int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre varchar(25) not null,
+    apellidos varchar(60) not null,
+    nick varchar(60) not null,
+    contrasenia varchar(255) not null,
+    correo varchar(255) not null,
+    permisos boolean not null default 0,
+	habilitado boolean not null default 1
+    
+);

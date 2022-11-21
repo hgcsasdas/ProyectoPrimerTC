@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.IniciarSesionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.IniciarSesionController">
    <children>
       <VBox layoutX="134.0" layoutY="135.0" prefHeight="203.0" prefWidth="337.0">
          <children>
@@ -34,16 +34,25 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <TextField onAction="#passwordInput" />
+                        <TextField fx:id="passwordInput" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <VBox alignment="CENTER" prefHeight="128.0" prefWidth="337.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="volverInicio" mnemonicParsing="false" onAction="#volverInicio" text="Inicio" />
+                  <VBox alignment="CENTER" prefHeight="80.0" prefWidth="277.0">
+                     <children>
+                        <Button fx:id="volverInicio" mnemonicParsing="false" onAction="#volverInicio" text="Inicio" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="80.0" prefWidth="277.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#login" text="login" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
          </children>
       </VBox>
    </children>

@@ -8,13 +8,16 @@ import javafx.scene.control.TextField;
 
 public class IniciarSesionController {
     @FXML
+    private TextField passwordInput;
+
+    @FXML
     private TextField userInput;
 
     @FXML
     private Button volverInicio;
 
     @FXML
-    void passwordInput(/*ActionEvent event*/) {
+    void login(/*ActionEvent event*/) {
 
     }
 
