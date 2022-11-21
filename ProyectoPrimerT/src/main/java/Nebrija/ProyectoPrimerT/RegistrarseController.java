@@ -1,12 +1,14 @@
 package Nebrija.ProyectoPrimerT;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import Nebrija.ProyectoPrimerT.ConexionBD.ConexionMysql;
 import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class RegistrarseController {
@@ -21,7 +23,7 @@ public class RegistrarseController {
     private Button btnVolverInicio;
 
     @FXML
-    private TextField contrasenia;
+    private PasswordField contrasenia;
 
     @FXML
     private TextField correo;
@@ -32,7 +34,7 @@ public class RegistrarseController {
     @FXML
     private TextField nombre;
     @FXML
-    void registrarUsuario(/*ActionEvent event*/) throws SQLException {
+    void registrarUsuario(/*ActionEvent event*/) throws SQLException, NoSuchAlgorithmException {
     	ConexionMysql conexion = new ConexionMysql();
     	Usuario user = validar();
     	conexion.crearUsuario(user);

@@ -1,11 +1,14 @@
 package Nebrija.ProyectoPrimerT.ConexionBD;
 
-import java.security.PublicKey;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
 
 public class ConexionMysql {
@@ -41,22 +44,77 @@ public class ConexionMysql {
 		
 	}
 	
-	public void crearUsuario(Usuario user) throws SQLException {
+	public String createSHAHash(String input)throws NoSuchAlgorithmException {
+
+		String hashtext = null;
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] messageDigest =
+		md.digest(input.getBytes(StandardCharsets.UTF_8));
+
+		hashtext = convertToHex(messageDigest);
+		return hashtext;
+	}
+	private String convertToHex(final byte[] messageDigest) {
+		BigInteger bigint = new BigInteger(1, messageDigest);
+		String hexText = bigint.toString(16);
+		while (hexText.length() < 32) {
+			hexText = "0".concat(hexText);
+		}
+		return hexText;
+	}
+	   
+	
+	public void crearUsuario(Usuario user) throws SQLException, NoSuchAlgorithmException {
 		 PreparedStatement stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo) values(?,?,?,?,?)");// parametización
 		 
 		 stmt.setString(1, user.getNombre());
 		 stmt.setString(2, user.getApellidos());
 		 stmt.setString(3, user.getNick());
-		 stmt.setString(4, user.getContrasenia());
+		 stmt.setString(4, createSHAHash(user.getContrasenia()));
 		 stmt.setString(5, user.getCorreo());
 		 
 		 stmt.executeUpdate();
+		 stmt.close();
 		 System.out.println("Creaste al user");
 
 	}
 	
-	public void loginUser() {
-		
+	public boolean loginUser(Usuario user) throws SQLException, NoSuchAlgorithmException {
+		boolean condicion = false;
+		System.out.println(user.getDatoInsertado());
+		String stmt = "SELECT * FROM usuarios where contrasenia = "+ "'" + createSHAHash(user.getContrasenia()) + "'" +" and (nick = "+ "'" + user.getDatoInsertado() + "'" +" or correo = "+ "'" + user.getDatoInsertado() + "'" +") ";
+		 try{
+			 PreparedStatement ps = conexion.prepareStatement(stmt);   
+			 ResultSet rs = ps.executeQuery();  
+	            if(rs.next()){
+	   			 	condicion = true;
+	            }
+		 } catch(Exception e){
+			 System.err.print("Ha ocurrido un error: "+ e.getMessage());
+	     } 
+        
+		return condicion;
+	}
+	
+	public boolean VerPermisos(Usuario user) {
+		boolean condicion = false;
+		String stmt = "Select permisos from usuarios where nick = "+ "'" + user.getDatoInsertado() + "'";
+		 try{
+			 PreparedStatement ps = conexion.prepareStatement(stmt);   
+			 ResultSet rs = ps.executeQuery();  
+	            if(rs.next()){
+	            	int permisos = rs.getInt("permisos");
+	            	if(permisos == 1) {
+		            	condicion = true;
+	            	}
+	            }else {
+	            	System.out.println("sad");
+
+	            }
+		 } catch(Exception e){
+			 System.err.print("Ha ocurrido un error: "+ e.getMessage());
+	     } 
+		return condicion;
 	}
 	
 	

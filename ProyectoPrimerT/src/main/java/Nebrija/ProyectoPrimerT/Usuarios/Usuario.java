@@ -8,6 +8,8 @@ public class Usuario {
 	private String correo;
 	private String contrasenia;
 	
+	private String datoInsertado;
+	
 	public Usuario(String nombre, String apellidos, String nick, String correo, String contrasenia) {
 		super();
 		this.nombre = nombre;
@@ -21,6 +23,12 @@ public class Usuario {
 		super();
 	}
 	
+	public Usuario(String datoInsertado, String contrasenia) {
+		super();
+		this.datoInsertado = datoInsertado;
+		this.contrasenia = contrasenia;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -50,6 +58,14 @@ public class Usuario {
 	}
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
+	}
+
+	public String getDatoInsertado() {
+		return datoInsertado;
+	}
+
+	public void setDatoInsertado(String datoInsertado) {
+		this.datoInsertado = datoInsertado;
 	}
 	
 	
