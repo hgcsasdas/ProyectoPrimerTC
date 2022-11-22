@@ -9,7 +9,24 @@ public class Usuario {
 	private String contrasenia;
 	
 	private String datoInsertado;
+	private String id;
+	private String permisos;
+	private String habilitar;
+
 	
+
+	public Usuario(String nombre, String apellidos, String nick, String correo, String contrasenia, String id, String permisos, String habilitar) {
+		super();
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.nick = nick;
+		this.correo = correo;
+		this.contrasenia = contrasenia;
+		this.id = id;
+		this.permisos = permisos;
+		this.habilitar = habilitar;
+	}
+
 	public Usuario(String nombre, String apellidos, String nick, String correo, String contrasenia) {
 		super();
 		this.nombre = nombre;
@@ -37,6 +54,29 @@ public class Usuario {
 	}
 	public String getApellidos() {
 		return apellidos;
+	}
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getPermisos() {
+		return permisos;
+	}
+	
+	public void setPermisos(String permisos) {
+		this.permisos = permisos;
+	}
+	
+	public String getHabilitar() {
+		return habilitar;
+	}
+	
+	public void setHabilitar(String habilitar) {
+		this.habilitar = habilitar;
 	}
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;

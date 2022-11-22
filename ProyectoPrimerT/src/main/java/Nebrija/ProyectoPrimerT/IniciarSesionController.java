@@ -29,18 +29,26 @@ public class IniciarSesionController {
     	if(condicion) {
     		
         	System.out.println("Existe el user");
-        	condicion = conexion.VerPermisos(user);
+        	condicion = conexion.VerHabilitacion(user);
         	
         	if(condicion) {
-            	App.setRoot("adminOpc");
+        		System.out.println("Tiene habilitado entrar");
+        		condicion = conexion.VerPermisos(user);
+            	
+            	if(condicion) {
+                	App.setRoot("adminOpc");
+            	}else {
+                	App.setRoot("normalUser");
+            	}
+            	
         	}else {
-            	App.setRoot("normalUser");
+        		System.out.println("No existe el user");
+
         	}
-        	
     	}else {
-        	System.out.println("No existe el user");
 
     	}
+        	
     }
 
     @FXML

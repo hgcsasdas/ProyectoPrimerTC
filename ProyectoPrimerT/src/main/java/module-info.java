@@ -5,4 +5,7 @@ module Nebrija.ProyectoPrimerT {
 
     opens Nebrija.ProyectoPrimerT to javafx.fxml;
     exports Nebrija.ProyectoPrimerT;
+    exports Nebrija.ProyectoPrimerT.ConexionBD;
+    exports Nebrija.ProyectoPrimerT.Usuarios;
+    exports Nebrija.ProyectoPrimerT.Objetos;
 }

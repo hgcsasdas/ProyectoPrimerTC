@@ -9,6 +9,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
 
 public class ConexionMysql {
@@ -117,5 +120,43 @@ public class ConexionMysql {
 		return condicion;
 	}
 	
+	public boolean VerHabilitacion(Usuario user) {
+		boolean condicion = false;
+		String stmt = "Select habilitado from usuarios where nick = "+ "'" + user.getDatoInsertado() + "'";
+		 try{
+			 PreparedStatement ps = conexion.prepareStatement(stmt);   
+			 ResultSet rs = ps.executeQuery();  
+	            if(rs.next()){
+	            	int permisos = rs.getInt("habilitado");
+	            	if(permisos == 1) {
+		            	condicion = true;
+	            	}
+	            }else {
+	            	System.out.println("sad");
+
+	            }
+		 } catch(Exception e){
+			 System.err.print("Ha ocurrido un error: "+ e.getMessage());
+	     } 
+		return condicion;
+	}
 	
+	public ArrayList<Usuario> llenarArrayUsuario(ArrayList<Usuario> listaUsuarios) throws SQLException{
+        Statement st = conexion.createStatement();
+        ResultSet srs = st.executeQuery("SELECT * FROM usuarios"); 
+        while (srs.next()) {
+        	Usuario user = new Usuario();
+        	user.setNombre(srs.getString("nombre"));
+        	user.setApellidos(srs.getString("apellidos"));
+        	user.setNick(srs.getString("nick"));
+        	user.setCorreo(srs.getString("correo"));
+        	user.setContrasenia(srs.getString("contrasenia"));
+        	user.setId(srs.getString("idUsuarios"));
+        	user.setPermisos(srs.getString("permisos"));
+        	user.setHabilitar(srs.getString("habilitado"));
+        	listaUsuarios.add(user);
+
+        }
+		return listaUsuarios;
+	}
 }
