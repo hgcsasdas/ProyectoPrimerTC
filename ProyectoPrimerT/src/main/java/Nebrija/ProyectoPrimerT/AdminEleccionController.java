@@ -2,11 +2,14 @@ package Nebrija.ProyectoPrimerT;
 
 import java.io.IOException;
 
+import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class AdminEleccionController {
 
+	Usuario user = new Usuario();
     @FXML
     private Button btnPagAdmin;
 
@@ -14,12 +17,19 @@ public class AdminEleccionController {
     private Button btnPagWeb;
 
     @FXML
-    void AdminGestionar(/*ActionEvent event*/) throws IOException {
-    	App.setScene("PaginaAdministracionUsuarios",757,540);
+    void AdminGestionar(ActionEvent event) throws IOException {
+    	App.setScene("PaginaAdministracionUsuarios",780,540);
     }
 
     @FXML
     void cambiarPagWeb(/*ActionEvent event*/) {
 
     }
+    
+    public void cogerUsuario(Usuario userMandado) {
+    	user.setNick(userMandado.getDatoInsertado());
+		AdministrarController administrarController = new AdministrarController();
+		administrarController.nombreAdmin(user);
+    }
+    
 }

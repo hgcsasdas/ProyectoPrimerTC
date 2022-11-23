@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="650.0" maxWidth="750.0" minHeight="650.0" minWidth="750.0" prefHeight="750" prefWidth="750" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
+<AnchorPane maxHeight="655.0" maxWidth="805.0" minHeight="650.0" minWidth="750.0" prefHeight="655.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
    <children>
-      <VBox alignment="CENTER" prefHeight="522.0" prefWidth="756.0">
+      <VBox alignment="CENTER" layoutX="24.0" layoutY="21.0" prefHeight="522.0" prefWidth="756.0">
          <children>
             <HBox prefHeight="49.0" prefWidth="756.0">
                <children>
@@ -23,7 +23,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="78.0" prefWidth="438.0">
                      <children>
-                        <Label fx:id="nickUsuario" />
+                        <Label fx:id="nickUsuario" text="User" />
                      </children>
                   </HBox>
                </children>
@@ -40,7 +40,7 @@
             </VBox>
             <VBox prefHeight="270.0" prefWidth="757.0">
                <children>
-                  <TableView fx:id="tablaUsuarios" prefHeight="412.0" prefWidth="757.0" />
+                  <TableView fx:id="tablaUsuarios" prefHeight="258.0" prefWidth="725.0" />
                </children>
             </VBox>
             <HBox prefHeight="206.0" prefWidth="757.0">

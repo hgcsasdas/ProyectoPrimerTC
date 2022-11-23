@@ -36,6 +36,9 @@ public class IniciarSesionController {
         		condicion = conexion.VerPermisos(user);
             	
             	if(condicion) {
+
+            		AdminEleccionController adminOpc = new AdminEleccionController();
+            		adminOpc.cogerUsuario(user);
                 	App.setRoot("adminOpc");
             	}else {
                 	App.setRoot("normalUser");

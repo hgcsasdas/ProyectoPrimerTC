@@ -1,6 +1,9 @@
 package Nebrija.ProyectoPrimerT;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Nebrija.ProyectoPrimerT.ConexionBD.ConexionMysql;
@@ -25,6 +29,13 @@ public class AdministrarController implements Initializable{
 	
 	private ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 	private ArrayList<Usuario> listaUsuariosBuscador = new ArrayList<Usuario>();
+	
+	private int posicion;
+	
+	AdminEleccionController ad = new AdminEleccionController();
+	
+	Usuario usera = new Usuario();
+	String c;
 	
 	@FXML
     private TextField apellidos;
@@ -55,7 +66,17 @@ public class AdministrarController implements Initializable{
     
     @FXML
     private TableView<Usuario> tablaUsuarios;
-
+    
+    @FXML
+    public void nuevo() {
+    	apellidos.setText("");
+    	contrasenia.setText("");
+    	correo.setText("");
+    	nick.setText("");
+    	nombre.setText("");
+    }
+    
+    
     @FXML
     void actualizarUsuario(/*ActionEvent event*/) {
 
@@ -100,9 +121,38 @@ public class AdministrarController implements Initializable{
 
     }
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+    @FXML
+    public void nombreAdmin(Usuario userMandado) {
+    	usera.setNick(userMandado.getNick());
+    	System.out.println(userMandado.getNick());
+    	c = userMandado.getNick();
+//    	nickUsuario.setText(c);
+
+    	
+    }
+
+    
+    public void gestionarEventos() {
+    	tablaUsuarios.getSelectionModel().selectedItemProperty().addListener(
+    			new ChangeListener<Usuario>() {
+    				@Override
+    				public void changed(ObservableValue<? extends Usuario> arg0, 
+    						Usuario valorAnterior, Usuario valorSeleccionado) {
+    					// TODO Auto-generated method stub
+    					if(valorSeleccionado != null ) {
+    		        	nombre.setText(String.valueOf(valorSeleccionado.getNombre()));
+    		        	apellidos.setText(String.valueOf(valorSeleccionado.getApellidos()));
+    		        	contrasenia.setText(String.valueOf(valorSeleccionado.getContrasenia()));
+    		        	correo.setText(String.valueOf(valorSeleccionado.getCorreo()));
+    		        	nick.setText(String.valueOf(valorSeleccionado.getNick()));
+    		        	
+						// TODO Auto-generated method stub
+    					}
+					}
+				});
+    }
+    
+    public void inicializarTablaPersonas() {
     	ConexionMysql conexion = new ConexionMysql();
     	try {
 			conexion.llenarArrayUsuario(listaUsuarios);
@@ -112,6 +162,7 @@ public class AdministrarController implements Initializable{
 			e.printStackTrace();
 		}
     	
+    	System.out.println(c);
     	
 		TableColumn idCol = new TableColumn("idUsuarios");
     	TableColumn nombreCol = new TableColumn("nombre");
@@ -135,5 +186,21 @@ public class AdministrarController implements Initializable{
 
     	ObservableList<Usuario> listaUsuariosNueva = FXCollections.observableArrayList(listaUsuarios);
     	tablaUsuarios.setItems((ObservableList<Usuario>) listaUsuariosNueva);
+    }
+    
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		/* TENGO QUE PONER EL NOMBRE DE LA LABEL CON EL DEL USER
+		System.out.println(usera.getNick() + "h2o)p");
+		//nickUsuario.setText(null);
+		
+		*/
+		//System.out.println(ad.user.getNick());
+		
+		inicializarTablaPersonas();
+		gestionarEventos();
+
 	}
+
 }
