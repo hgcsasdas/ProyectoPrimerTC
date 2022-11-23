@@ -21,13 +21,18 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
     	
         scene = new Scene(loadFXML("Inicio"));
-//        scene = new Scene(loadFXML("PaginaAdministracionUsuarios"),750,600);
         stage.setScene(scene);
         stage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+    static void setScene(String fxml,int ancho,int altura) throws IOException {
+    	Stage stage = new Stage();
+        scene=new Scene(loadFXML(fxml),ancho,altura);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

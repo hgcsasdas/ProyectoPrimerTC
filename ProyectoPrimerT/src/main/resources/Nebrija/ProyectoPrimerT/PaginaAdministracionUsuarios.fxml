@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
+<AnchorPane maxHeight="650.0" maxWidth="750.0" minHeight="650.0" minWidth="750.0" prefHeight="750" prefWidth="750" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
    <children>
       <VBox alignment="CENTER" prefHeight="522.0" prefWidth="756.0">
          <children>

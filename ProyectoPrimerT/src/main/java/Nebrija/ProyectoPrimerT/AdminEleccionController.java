@@ -15,7 +15,7 @@ public class AdminEleccionController {
 
     @FXML
     void AdminGestionar(/*ActionEvent event*/) throws IOException {
-    	App.setRoot("PaginaAdministracionUsuarios");
+    	App.setScene("PaginaAdministracionUsuarios",757,540);
     }
 
     @FXML

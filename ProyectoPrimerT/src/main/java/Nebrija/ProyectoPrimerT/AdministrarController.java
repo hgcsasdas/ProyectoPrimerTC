@@ -10,6 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -22,6 +24,7 @@ import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
 public class AdministrarController implements Initializable{
 	
 	private ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+	private ArrayList<Usuario> listaUsuariosBuscador = new ArrayList<Usuario>();
 	
 	@FXML
     private TextField apellidos;
@@ -64,8 +67,27 @@ public class AdministrarController implements Initializable{
     }
 
     @FXML
-    void buscarEnTabla(/*KeyEvent event*/) {
-
+    void buscarEnTabla(KeyEvent event) {
+    	String x = buscador.getText().toLowerCase();
+    	listaUsuariosBuscador.clear();
+    	for(int i=0; i<listaUsuarios.size(); i++) {
+    		Usuario o = listaUsuarios.get(i);
+			if(o.getNombre().toLowerCase().contains(x)) {
+    			if(!listaUsuariosBuscador.equals(o)) {
+    				listaUsuariosBuscador.add(o);
+    			}
+    		}else {
+				System.out.println("Ya está añadido");	    			
+    		}
+    	}
+    	
+    	if(buscador.getText().isEmpty()) {
+        	ObservableList<Usuario> listaUsuariosNueva = FXCollections.observableArrayList(listaUsuarios);
+        	tablaUsuarios.setItems((ObservableList<Usuario>) listaUsuariosNueva);    		
+    	}else {
+        	ObservableList<Usuario> listaUsuariosNueva = FXCollections.observableArrayList(listaUsuariosBuscador);
+        	tablaUsuarios.setItems((ObservableList<Usuario>) listaUsuariosNueva);
+    	}
     }
 
     @FXML
@@ -84,6 +106,7 @@ public class AdministrarController implements Initializable{
     	ConexionMysql conexion = new ConexionMysql();
     	try {
 			conexion.llenarArrayUsuario(listaUsuarios);
+			conexion.llenarArrayUsuario(listaUsuariosBuscador);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
