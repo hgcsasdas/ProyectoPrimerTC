@@ -69,19 +69,35 @@ public class ConexionMysql {
 	
 	public void crearUsuario(Usuario user) throws SQLException, NoSuchAlgorithmException {
 		 PreparedStatement stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo) values(?,?,?,?,?)");// parametización
-		 
 		 stmt.setString(1, user.getNombre());
 		 stmt.setString(2, user.getApellidos());
 		 stmt.setString(3, user.getNick());
 		 stmt.setString(4, createSHAHash(user.getContrasenia()));
 		 stmt.setString(5, user.getCorreo());
-		 
+
 		 stmt.executeUpdate();
 		 stmt.close();
 		 System.out.println("Creaste al user");
 
 	}
 	
+	public void crearUsuarioAdmin(Usuario user) throws SQLException, NoSuchAlgorithmException {
+		 PreparedStatement stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo, permisos) values(?,?,?,?,?,?)");// parametización
+		 
+		 stmt.setString(1, user.getNombre());
+		 stmt.setString(2, user.getApellidos());
+		 stmt.setString(3, user.getNick());
+		 stmt.setString(4, createSHAHash(user.getContrasenia()));
+		 stmt.setString(5, user.getCorreo());
+		 stmt.setString(6, user.getPermisos());
+
+		 System.out.println(stmt.toString());
+		 stmt.executeUpdate();
+		 stmt.close();
+		 System.out.println("Creaste al user");
+
+	}
+
 	public boolean loginUser(Usuario user) throws SQLException, NoSuchAlgorithmException {
 		boolean condicion = false;
 		System.out.println(user.getDatoInsertado());
@@ -159,4 +175,31 @@ public class ConexionMysql {
         }
 		return listaUsuarios;
 	}
+	
+	public void actualizarUser(Usuario user) throws SQLException, NoSuchAlgorithmException {
+
+		String con = NombreSesion.cogerContraseniaGuardada();
+		String stmt = "";
+		if(con.equals(user.getContrasenia())) {
+			stmt = "UPDATE `usuarios` SET `nombre`='" + user.getNombre() +"',`apellidos`='"  + user.getApellidos() + "',`nick`='" +user.getNick() + "',`contrasenia`='" + user.getContrasenia() +"',`correo` ='" + user.getCorreo() +"',`permisos`='"+ user.getPermisos() +"' WHERE idUsuarios = " + user.getId();
+		}else {
+			stmt = "UPDATE `usuarios` SET `nombre`='" + user.getNombre() +"',`apellidos`='"  + user.getApellidos() + "',`nick`='" +user.getNick() + "',`contrasenia`='" + createSHAHash(user.getContrasenia()) +"',`correo` ='" + user.getCorreo() +"',`permisos`='"+ user.getPermisos() +"' WHERE idUsuarios = " + user.getId();
+		}
+		System.out.println(stmt);
+		PreparedStatement ps = conexion.prepareStatement(stmt);   
+		
+		ps.executeUpdate();
+		ps.close();
+		System.out.println("Actualizaste al user");
+
+	}
+	public void eliminarUsuario(Usuario user) throws SQLException {
+		String stmt = "UPDATE `usuarios` SET habilitado = 0 where idUsuarios = " + user.getId() ;
+		PreparedStatement ps = conexion.prepareStatement(stmt);   
+		
+		ps.executeUpdate();
+		ps.close();
+		System.out.println("Se eliminó al User");
+	}
+	
 }

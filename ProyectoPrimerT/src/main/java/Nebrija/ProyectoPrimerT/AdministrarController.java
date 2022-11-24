@@ -7,6 +7,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -17,12 +18,13 @@ import javafx.scene.input.KeyEvent;
 
 
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import Nebrija.ProyectoPrimerT.ConexionBD.ConexionMysql;
+import Nebrija.ProyectoPrimerT.ConexionBD.NombreSesion;
 import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
 
 public class AdministrarController implements Initializable{
@@ -30,13 +32,20 @@ public class AdministrarController implements Initializable{
 	private ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 	private ArrayList<Usuario> listaUsuariosBuscador = new ArrayList<Usuario>();
 	
-	private int posicion;
+	public Usuario c = new Usuario();
 	
-	AdminEleccionController ad = new AdminEleccionController();
-	
-	Usuario usera = new Usuario();
-	String c;
-	
+	@FXML
+    private Button actualizarbtn;
+
+    @FXML
+    private Button aniadirbtn;
+
+    @FXML
+    private Button nuevobtn;
+    
+    @FXML
+    private Button eliminarbtn;
+    
 	@FXML
     private TextField apellidos;
 
@@ -74,19 +83,36 @@ public class AdministrarController implements Initializable{
     	correo.setText("");
     	nick.setText("");
     	nombre.setText("");
+    	
+		habilitado.setSelected(false);
+		permisos.setSelected(false);
+
+    	actualizarbtn.setDisable(true);
+    	eliminarbtn.setDisable(true);
     }
     
     
     @FXML
     void actualizarUsuario(/*ActionEvent event*/) {
-
+    	ConexionMysql conexion = new ConexionMysql();
+    	crearUsuario();
+    	try {
+			conexion.actualizarUser(c);
+		} catch (NoSuchAlgorithmException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	actualizarTabla();
     }
 
     @FXML
-    void aniadirUsuario(/*ActionEvent event*/) {
-
+    void aniadirUsuario(/*ActionEvent event*/) throws NoSuchAlgorithmException, SQLException {
+    	ConexionMysql conexion = new ConexionMysql();
+    	crearUsuario();
+    	conexion.crearUsuarioAdmin(c);
+    	actualizarTabla();
     }
-
+    
     @FXML
     void buscarEnTabla(KeyEvent event) {
     	String x = buscador.getText().toLowerCase();
@@ -112,25 +138,44 @@ public class AdministrarController implements Initializable{
     }
 
     @FXML
-    void eliminarUsuario(/*ActionEvent event*/) {
-
+    void eliminarUsuario(/*ActionEvent event*/) throws SQLException {
+    	ConexionMysql conexion = new ConexionMysql();
+    	crearUsuario();
+    	conexion.eliminarUsuario(c);
+    	actualizarTabla();
     }
 
     @FXML
     void irWeb(/*ActionEvent event*/) {
 
     }
-
-    @FXML
-    public void nombreAdmin(Usuario userMandado) {
-    	usera.setNick(userMandado.getNick());
-    	System.out.println(userMandado.getNick());
-    	c = userMandado.getNick();
-//    	nickUsuario.setText(c);
-
-    	
+    
+    public void crearUsuario() {
+    	System.out.println(apellidos.getText());
+		c.setApellidos(apellidos.getText());
+		c.setContrasenia(contrasenia.getText());
+		c.setCorreo(correo.getText());
+		c.setNick(nick.getText());
+		if(permisos.isSelected() == true) {			
+			c.setPermisos("1");
+		}else {
+			c.setPermisos("0");
+		}
+		c.setNombre(nombre.getText());
     }
-
+    
+    public void actualizarTabla() {
+    	listaUsuarios.clear();
+    	ConexionMysql conexion = new ConexionMysql();
+    	try {
+			conexion.llenarArrayUsuario(listaUsuarios);
+			conexion.llenarArrayUsuario(listaUsuariosBuscador);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	ObservableList<Usuario> listaUsuariosNueva = FXCollections.observableArrayList(listaUsuarios);
+    	tablaUsuarios.setItems((ObservableList<Usuario>) listaUsuariosNueva);
+    }
     
     public void gestionarEventos() {
     	tablaUsuarios.getSelectionModel().selectedItemProperty().addListener(
@@ -138,21 +183,53 @@ public class AdministrarController implements Initializable{
     				@Override
     				public void changed(ObservableValue<? extends Usuario> arg0, 
     						Usuario valorAnterior, Usuario valorSeleccionado) {
+    					nuevo();
     					// TODO Auto-generated method stub
     					if(valorSeleccionado != null ) {
-    		        	nombre.setText(String.valueOf(valorSeleccionado.getNombre()));
-    		        	apellidos.setText(String.valueOf(valorSeleccionado.getApellidos()));
-    		        	contrasenia.setText(String.valueOf(valorSeleccionado.getContrasenia()));
-    		        	correo.setText(String.valueOf(valorSeleccionado.getCorreo()));
-    		        	nick.setText(String.valueOf(valorSeleccionado.getNick()));
-    		        	
-						// TODO Auto-generated method stub
+    						String idVS = String.valueOf(valorSeleccionado.getId());
+    						String apellidosVS = String.valueOf(valorSeleccionado.getApellidos());
+    						String contraseniaVS = String.valueOf(valorSeleccionado.getContrasenia());
+    						String correoVS = String.valueOf(valorSeleccionado.getCorreo());
+    						String habilitarVS = String.valueOf(valorSeleccionado.getHabilitar());
+    						String nickVS = String.valueOf(valorSeleccionado.getNick());
+    						String permisosVS = String.valueOf(valorSeleccionado.getPermisos());
+    						String nombreVS = String.valueOf(valorSeleccionado.getNombre());
+    						
+    						c.setId(idVS);
+    						c.setHabilitar(habilitarVS);
+	
+    						NombreSesion.contraseniaGuardar(contraseniaVS);;
+    						
+    						nombre.setText(nombreVS);
+    						apellidos.setText(apellidosVS);
+    						contrasenia.setText(contraseniaVS);
+    						correo.setText(correoVS);
+    						nick.setText(nickVS);
+    						
+    						if(permisosVS.equals("1")) {
+    							permisos.setSelected(true);
+    						}
+    						
+    						if(habilitarVS.equals("1")) {
+    							habilitado.setSelected(true);
+    						}
+    						
+    				    	actualizarbtn.setDisable(false);
+    				    	eliminarbtn.setDisable(false);
+    				    	    				    	
     					}
 					}
 				});
+    	
+    	nickUsuario.setText(NombreSesion.cogerNombreUsuario());
+    	
+    	actualizarbtn.setDisable(true);
+    	eliminarbtn.setDisable(true);
+    	habilitado.setDisable(true);
+    	
     }
     
-    public void inicializarTablaPersonas() {
+    public void inicializarTablaUsuarios() {
     	ConexionMysql conexion = new ConexionMysql();
     	try {
 			conexion.llenarArrayUsuario(listaUsuarios);
@@ -161,9 +238,7 @@ public class AdministrarController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	System.out.println(c);
-    	
+    	    	
 		TableColumn idCol = new TableColumn("idUsuarios");
     	TableColumn nombreCol = new TableColumn("nombre");
     	TableColumn apellidosCol = new TableColumn("apellidos");
@@ -190,15 +265,8 @@ public class AdministrarController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		/* TENGO QUE PONER EL NOMBRE DE LA LABEL CON EL DEL USER
-		System.out.println(usera.getNick() + "h2o)p");
-		//nickUsuario.setText(null);
-		
-		*/
-		//System.out.println(ad.user.getNick());
-		
-		inicializarTablaPersonas();
+
+		inicializarTablaUsuarios();
 		gestionarEventos();
 
 	}

@@ -18,18 +18,12 @@ public class AdminEleccionController {
 
     @FXML
     void AdminGestionar(ActionEvent event) throws IOException {
-    	App.setScene("PaginaAdministracionUsuarios",780,540);
+    	App.setScene("PaginaAdministracionUsuarios",800,540);
     }
 
     @FXML
     void cambiarPagWeb(/*ActionEvent event*/) {
 
     }
-    
-    public void cogerUsuario(Usuario userMandado) {
-    	user.setNick(userMandado.getDatoInsertado());
-		AdministrarController administrarController = new AdministrarController();
-		administrarController.nombreAdmin(user);
-    }
-    
+  
 }

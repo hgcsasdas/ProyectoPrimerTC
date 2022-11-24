@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import Nebrija.ProyectoPrimerT.ConexionBD.ConexionMysql;
+import Nebrija.ProyectoPrimerT.ConexionBD.NombreSesion;
 import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -36,9 +37,8 @@ public class IniciarSesionController {
         		condicion = conexion.VerPermisos(user);
             	
             	if(condicion) {
-
-            		AdminEleccionController adminOpc = new AdminEleccionController();
-            		adminOpc.cogerUsuario(user);
+            		NombreSesion.aniadirNickSesion(user);
+            		System.out.println("asdasd");
                 	App.setRoot("adminOpc");
             	}else {
                 	App.setRoot("normalUser");

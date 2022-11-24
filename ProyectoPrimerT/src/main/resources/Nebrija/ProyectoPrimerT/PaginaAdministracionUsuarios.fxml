@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="655.0" maxWidth="805.0" minHeight="650.0" minWidth="750.0" prefHeight="655.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
+<AnchorPane maxHeight="655.0" maxWidth="805.0" minHeight="650.0" minWidth="750.0" prefHeight="655.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
    <children>
       <VBox alignment="CENTER" layoutX="24.0" layoutY="21.0" prefHeight="522.0" prefWidth="756.0">
          <children>
@@ -159,17 +159,22 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#aniadirUsuario" text="Añadir" />
+                              <Button fx:id="aniadirbtn" mnemonicParsing="false" onAction="#aniadirUsuario" text="Añadir" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#actualizarUsuario" text="Actualizar" />
+                              <Button fx:id="actualizarbtn" mnemonicParsing="false" onAction="#actualizarUsuario" text="Actualizar" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#eliminarUsuario" text="Eliminar" />
+                              <Button fx:id="eliminarbtn" mnemonicParsing="false" onAction="#eliminarUsuario" text="Eliminar" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="nuevobtn" mnemonicParsing="false" onAction="#nuevo" text="Nuevo" />
                            </children>
                         </VBox>
                      </children>
