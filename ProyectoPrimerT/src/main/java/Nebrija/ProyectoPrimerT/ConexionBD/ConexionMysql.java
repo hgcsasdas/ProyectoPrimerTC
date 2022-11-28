@@ -159,7 +159,7 @@ public class ConexionMysql {
 	
 	public ArrayList<Usuario> llenarArrayUsuario(ArrayList<Usuario> listaUsuarios) throws SQLException{
         Statement st = conexion.createStatement();
-        ResultSet srs = st.executeQuery("SELECT * FROM usuarios"); 
+        ResultSet srs = st.executeQuery("SELECT * FROM usuarios where habilitado = 1"); 
         while (srs.next()) {
         	Usuario user = new Usuario();
         	user.setNombre(srs.getString("nombre"));
