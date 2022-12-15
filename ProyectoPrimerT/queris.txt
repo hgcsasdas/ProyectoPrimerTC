@@ -9,3 +9,4 @@ create table `usuarios`(
 	habilitado boolean not null default 1
     
 );
+create database proyectocarceles;
