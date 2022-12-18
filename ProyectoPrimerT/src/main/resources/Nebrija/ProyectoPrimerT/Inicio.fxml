@@ -2,10 +2,11 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.InicioController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.InicioController">
    <children>
       <VBox layoutX="141.0" layoutY="128.0" prefHeight="145.0" prefWidth="318.0">
          <children>
@@ -25,5 +26,6 @@
             </VBox>
          </children>
       </VBox>
+      <Label layoutX="112.0" layoutY="26.0" prefHeight="89.0" prefWidth="376.0" text="Bienvenido a la app: leeLibros, inicie sesión, o cree una cuenta" />
    </children>
 </AnchorPane>

@@ -67,34 +67,47 @@ public class ConexionMysql {
 	}
 	   
 	
-	public void crearUsuario(Usuario user) throws SQLException, NoSuchAlgorithmException {
-		 PreparedStatement stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo) values(?,?,?,?,?)");// parametización
-		 stmt.setString(1, user.getNombre());
-		 stmt.setString(2, user.getApellidos());
-		 stmt.setString(3, user.getNick());
-		 stmt.setString(4, createSHAHash(user.getContrasenia()));
-		 stmt.setString(5, user.getCorreo());
+	public boolean crearUsuario(Usuario user, boolean creado) throws NoSuchAlgorithmException{
+		 PreparedStatement stmt;
+		try {
+			stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo) values(?,?,?,?,?)");
+			stmt.setString(1, user.getNombre());
+			stmt.setString(2, user.getApellidos());
+			stmt.setString(3, user.getNick());
+			stmt.setString(4, createSHAHash(user.getContrasenia()));
+			stmt.setString(5, user.getCorreo());
 
-		 stmt.executeUpdate();
-		 stmt.close();
-		 System.out.println("Creaste al user");
-
+			stmt.executeUpdate();
+			stmt.close();
+			creado = true;
+		} catch (SQLException e) {		
+			e.printStackTrace();
+		}
+		 return creado; 
 	}
 	
-	public void crearUsuarioAdmin(Usuario user) throws SQLException, NoSuchAlgorithmException {
-		 PreparedStatement stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo, permisos) values(?,?,?,?,?,?)");// parametización
-		 
-		 stmt.setString(1, user.getNombre());
-		 stmt.setString(2, user.getApellidos());
-		 stmt.setString(3, user.getNick());
-		 stmt.setString(4, createSHAHash(user.getContrasenia()));
-		 stmt.setString(5, user.getCorreo());
-		 stmt.setString(6, user.getPermisos());
+	public boolean crearUsuarioAdmin(Usuario user, boolean creado) throws NoSuchAlgorithmException {
+		 PreparedStatement stmt;
+		try {
+			stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo, permisos) values(?,?,?,?,?,?)");
+			stmt.setString(1, user.getNombre());
+			stmt.setString(2, user.getApellidos());
+			stmt.setString(3, user.getNick());
+		 	stmt.setString(4, createSHAHash(user.getContrasenia()));
+		 	stmt.setString(5, user.getCorreo());
+		 	stmt.setString(6, user.getPermisos());
 
-		 System.out.println(stmt.toString());
-		 stmt.executeUpdate();
-		 stmt.close();
-		 System.out.println("Creaste al user");
+		 	System.out.println(stmt.toString());
+		 	stmt.executeUpdate();
+		 	stmt.close();
+		 	System.out.println("Creaste al user");
+		 	creado = true;
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		 return creado;
 
 	}
 
@@ -128,7 +141,6 @@ public class ConexionMysql {
 	            	}
 	            }else {
 	            	System.out.println("sad");
-
 	            }
 		 } catch(Exception e){
 			 System.err.print("Ha ocurrido un error: "+ e.getMessage());
@@ -162,6 +174,7 @@ public class ConexionMysql {
         ResultSet srs = st.executeQuery("SELECT * FROM usuarios where habilitado = 1"); 
         while (srs.next()) {
         	Usuario user = new Usuario();
+
         	user.setNombre(srs.getString("nombre"));
         	user.setApellidos(srs.getString("apellidos"));
         	user.setNick(srs.getString("nick"));
@@ -170,13 +183,13 @@ public class ConexionMysql {
         	user.setId(srs.getString("idUsuarios"));
         	user.setPermisos(srs.getString("permisos"));
         	user.setHabilitar(srs.getString("habilitado"));
+        	
         	listaUsuarios.add(user);
-
         }
 		return listaUsuarios;
 	}
 	
-	public void actualizarUser(Usuario user) throws SQLException, NoSuchAlgorithmException {
+	public boolean actualizarUser(Usuario user, boolean actualizado) throws NoSuchAlgorithmException {
 
 		String con = NombreSesion.cogerContraseniaGuardada();
 		String stmt = "";
@@ -186,20 +199,39 @@ public class ConexionMysql {
 			stmt = "UPDATE `usuarios` SET `nombre`='" + user.getNombre() +"',`apellidos`='"  + user.getApellidos() + "',`nick`='" +user.getNick() + "',`contrasenia`='" + createSHAHash(user.getContrasenia()) +"',`correo` ='" + user.getCorreo() +"',`permisos`='"+ user.getPermisos() +"' WHERE idUsuarios = " + user.getId();
 		}
 		System.out.println(stmt);
-		PreparedStatement ps = conexion.prepareStatement(stmt);   
+		PreparedStatement ps;
+		try {
+			ps = conexion.prepareStatement(stmt);
+			ps.executeUpdate();
+			ps.close();
+			actualizado = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
 		
-		ps.executeUpdate();
-		ps.close();
+		
 		System.out.println("Actualizaste al user");
+		
+		return actualizado;
 
 	}
-	public void eliminarUsuario(Usuario user) throws SQLException {
+	public boolean eliminarUsuario(Usuario user, boolean eliminado) {
 		String stmt = "UPDATE `usuarios` SET habilitado = 0 where idUsuarios = " + user.getId() ;
-		PreparedStatement ps = conexion.prepareStatement(stmt);   
+		PreparedStatement ps;
+		try {
+			ps = conexion.prepareStatement(stmt);
+			ps.executeUpdate();
+			ps.close();
+			eliminado = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
 		
-		ps.executeUpdate();
-		ps.close();
+		
 		System.out.println("Se eliminó al User");
+		return eliminado;
 	}
 	
 }

@@ -16,11 +16,15 @@ public class InicioController {
     @FXML
     void cambiarIniciarSesion(/*ActionEvent event*/) throws IOException {
     	App.setRoot("iniciarSesion");
-
     }
 
     @FXML
     void cambiarRegistrarse(/*ActionEvent event*/) throws IOException {
     	App.setRoot("registrarse");
+    }
+    @FXML
+    void volverInicio(/*ActionEvent event*/) throws IOException {
+    	App.setRoot("Inicio");
+
     }
 }

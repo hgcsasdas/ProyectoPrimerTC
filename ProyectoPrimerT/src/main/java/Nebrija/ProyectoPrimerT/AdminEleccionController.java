@@ -25,5 +25,8 @@ public class AdminEleccionController {
     void cambiarPagWeb(/*ActionEvent event*/) {
 
     }
-  
+  @FXML
+  void inicio() throws IOException {
+	  App.setRoot("Inicio");
+  }
 }

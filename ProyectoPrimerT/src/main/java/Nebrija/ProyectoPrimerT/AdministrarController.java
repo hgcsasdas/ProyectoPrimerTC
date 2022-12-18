@@ -5,8 +5,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -16,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 
-
+import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -91,14 +93,69 @@ public class AdministrarController implements Initializable{
     	eliminarbtn.setDisable(true);
     }
     
+    @FXML
+    private void mostrarAlertCreacion(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("Usuario correctamente creado");
+        alert.showAndWait();
+    }
+    @FXML
+    private void mostrarAlertCreacionF(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("El usuario no se ha podido crear");
+        alert.showAndWait();
+    }
+    @FXML
+    private void mostrarAlertEliminacion(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("Usuario eliminado corrrectamente");
+        alert.showAndWait();
+    }
+    @FXML
+    private void mostrarAlertEliminacionF(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("El usuario no se ha podido eliminar");
+        alert.showAndWait();
+    }
     
     @FXML
-    void actualizarUsuario(/*ActionEvent event*/) {
+    private void mostrarAlertActualizacion(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("Usuario actualizado correctamente");
+        alert.showAndWait();
+    }
+    @FXML
+    private void mostrarAlertActualizacionF(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("El usuario no se ha podido actualizar");
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void actualizarUsuario(/*ActionEvent event*/) {
     	ConexionMysql conexion = new ConexionMysql();
+    	boolean actualizado = false;
     	crearUsuario();
     	try {
-			conexion.actualizarUser(c);
-		} catch (NoSuchAlgorithmException | SQLException e) {
+			actualizado = conexion.actualizarUser(c, actualizado);
+			if(actualizado) {
+				mostrarAlertActualizacion(null);
+			}else {
+				mostrarAlertActualizacionF(null);
+			}
+		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -106,10 +163,16 @@ public class AdministrarController implements Initializable{
     }
 
     @FXML
-    void aniadirUsuario(/*ActionEvent event*/) throws NoSuchAlgorithmException, SQLException {
+    void aniadirUsuario(/*ActionEvent event*/) throws NoSuchAlgorithmException {
     	ConexionMysql conexion = new ConexionMysql();
+    	boolean creado = false;
     	crearUsuario();
-    	conexion.crearUsuarioAdmin(c);
+    	creado = conexion.crearUsuarioAdmin(c, creado);
+    	if(creado) {
+    		mostrarAlertCreacion(null);
+    	}else {
+    		mostrarAlertCreacionF(null);
+    	}
     	actualizarTabla();
     }
     
@@ -138,10 +201,17 @@ public class AdministrarController implements Initializable{
     }
 
     @FXML
-    void eliminarUsuario(/*ActionEvent event*/) throws SQLException {
+    void eliminarUsuario(/*ActionEvent event*/) {
+    	mostrarAlertEliminacion(null);
+    	boolean eliminado = false;
     	ConexionMysql conexion = new ConexionMysql();
     	crearUsuario();
-    	conexion.eliminarUsuario(c);
+    	eliminado = conexion.eliminarUsuario(c, eliminado);
+    	if(eliminado) {
+    		mostrarAlertEliminacion(null);
+    	}else {
+    		mostrarAlertEliminacionF(null);
+    	}
     	actualizarTabla();
     }
 
@@ -243,18 +313,18 @@ public class AdministrarController implements Initializable{
     	TableColumn nombreCol = new TableColumn("nombre");
     	TableColumn apellidosCol = new TableColumn("apellidos");
     	TableColumn nickCol = new TableColumn("nick");
-    	TableColumn contraseniaCol = new TableColumn("contraseña");
+//    	TableColumn contraseniaCol = new TableColumn("contraseña");
     	TableColumn correoCol = new TableColumn("correo");
     	TableColumn permisosCol = new TableColumn("permisos");
     	TableColumn habilitarCol = new TableColumn("habilitado");
     	
-    	tablaUsuarios.getColumns().addAll(idCol, nombreCol, apellidosCol, nickCol, contraseniaCol, correoCol, permisosCol, habilitarCol);
+    	tablaUsuarios.getColumns().addAll(idCol, nombreCol, apellidosCol, nickCol, /*contraseniaCol,*/ correoCol, permisosCol, habilitarCol);
     	
     	idCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("id"));
     	nombreCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nombre"));
     	apellidosCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("apellidos"));
     	nickCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nick"));
-    	contraseniaCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("contrasenia"));
+    	//contraseniaCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("contrasenia"));
     	correoCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("correo"));
     	permisosCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("permisos"));
     	habilitarCol.setCellValueFactory(new PropertyValueFactory<Usuario, String>("habilitar"));

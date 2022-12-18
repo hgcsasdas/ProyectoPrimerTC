@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="655.0" maxWidth="805.0" minHeight="650.0" minWidth="750.0" prefHeight="655.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
+<AnchorPane maxHeight="655.0" maxWidth="805.0" minHeight="650.0" minWidth="750.0" prefHeight="655.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Nebrija.ProyectoPrimerT.AdministrarController">
    <children>
       <VBox alignment="CENTER" layoutX="24.0" layoutY="21.0" prefHeight="522.0" prefWidth="756.0">
          <children>
@@ -18,7 +18,8 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="78.0" prefWidth="402.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#irWeb" text="Ir a la web" />
+                        <Button mnemonicParsing="false" onAction="#irWeb" prefHeight="25.0" prefWidth="86.0" text="Ir a la web" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="78.0" prefWidth="438.0">

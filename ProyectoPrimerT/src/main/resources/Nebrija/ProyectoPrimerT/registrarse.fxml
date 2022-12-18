@@ -98,5 +98,6 @@
             </HBox>
          </children>
       </VBox>
+      <Label layoutX="212.0" layoutY="44.0" text="Inserte los datos para registrarse" />
    </children>
 </AnchorPane>

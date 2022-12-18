@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import Nebrija.ProyectoPrimerT.ConexionBD.ConexionMysql;
 import Nebrija.ProyectoPrimerT.ConexionBD.NombreSesion;
 import Nebrija.ProyectoPrimerT.Usuarios.Usuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -21,12 +23,27 @@ public class IniciarSesionController {
 
     @FXML
     private Button volverInicio;
-
     @FXML
-    void login(/*ActionEvent event*/) throws SQLException, IOException, NoSuchAlgorithmException {
+    private void mostrarAlert(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Usuario");
+        alert.setContentText("Usuario o contraseñas incorrectos");
+        alert.showAndWait();
+    }
+    @FXML
+    void login(/*ActionEvent event*/) throws NoSuchAlgorithmException, IOException {
     	ConexionMysql conexion = new ConexionMysql();
     	Usuario user = validar();
-    	boolean condicion = conexion.loginUser(user);
+    	boolean condicion = false;
+		try {
+			condicion = conexion.loginUser(user);
+		} catch (NoSuchAlgorithmException | SQLException e) {
+			// TODO Auto-generated catch block
+			mostrarAlert(null);
+			e.printStackTrace();
+		}
+		
     	if(condicion) {
     		
         	System.out.println("Existe el user");
@@ -39,17 +56,23 @@ public class IniciarSesionController {
             	if(condicion) {
             		NombreSesion.aniadirNickSesion(user);
             		System.out.println("asdasd");
-                	App.setRoot("adminOpc");
+                	try {
+						App.setRoot("adminOpc");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
             	}else {
+        			mostrarAlert(null);
                 	App.setRoot("normalUser");
             	}
             	
         	}else {
         		System.out.println("No existe el user");
-
+    			mostrarAlert(null);
         	}
     	}else {
-
+			mostrarAlert(null);
     	}
         	
     }

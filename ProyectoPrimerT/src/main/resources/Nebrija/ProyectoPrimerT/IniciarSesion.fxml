@@ -56,5 +56,6 @@
             </HBox>
          </children>
       </VBox>
+      <Label layoutX="212.0" layoutY="53.0" text="Inicie sesión para acceder a la app" />
    </children>
 </AnchorPane>
