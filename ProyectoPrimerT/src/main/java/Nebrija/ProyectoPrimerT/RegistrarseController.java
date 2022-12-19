@@ -35,14 +35,16 @@ public class RegistrarseController {
 
     @FXML
     private TextField nombre;
+    private boolean creado = false;
     @FXML
     void registrarUsuario(/*ActionEvent event*/) throws SQLException, NoSuchAlgorithmException {
-    	boolean creado  = false;
     	ConexionMysql conexion = new ConexionMysql();
     	Usuario user = validar();
-    	System.out.println("sse ha validao");
-    	creado = conexion.crearUsuario(user, creado);
-    	
+    	if(creado){
+        	creado = conexion.crearUsuario(user, creado);
+    	}else {
+    		System.out.println("sse ha validao");
+    	}    	
     	if(creado) {
     		String u = "El usuario se ha creado con éxito";
     		mostrarAlertInfo(null);
@@ -71,8 +73,8 @@ public class RegistrarseController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
     }
+    
     @FXML
     private void mostrarAlert(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -81,46 +83,48 @@ public class RegistrarseController {
         alert.setContentText("No se puede crear porque se ha superado el número de caracteres posibles");
         alert.showAndWait();
     }
+    
     public Usuario validar() {
     	Usuario user = new Usuario();
-    	boolean validar = true;
     	
 			if(!nombre.getText().isEmpty()) {
 				user.setNombre(nombre.getText());
-				validar = false;
 			}else {
 				mostrarAlert(null);
+				creado = false;
 	        	nombre.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
 			}
 			if(!apellidos.getText().isEmpty()) {
 				user.setApellidos(apellidos.getText());
-				validar = false;
 			}else {
 				mostrarAlert(null);
+				creado = false;
 	        	apellidos.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
 			}
 			if(!nickname.getText().isEmpty()) {
 				user.setNick(nickname.getText());
-				validar = false;
 			}else {
 				mostrarAlert(null);
+				creado = false;
 	        	nickname.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
 			}
 			if(!contrasenia.getText().isEmpty()) {
 				user.setContrasenia(contrasenia.getText());
-				validar = false;
 			}else {
 				mostrarAlert(null);
-	        	contrasenia.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+				creado = false;
+				contrasenia.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
 			}
 			if(!correo.getText().isEmpty()) {
 				user.setCorreo(correo.getText());
-				validar = false;
 			}else {
 				mostrarAlert(null);
+				creado = false;
 	        	correo.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
 			}
-		return user;
+		
+			
+			return user;
     }
 
 }

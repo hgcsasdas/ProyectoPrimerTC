@@ -47,14 +47,20 @@ public class ConexionMysql {
 		
 	}
 	
-	public String createSHAHash(String input)throws NoSuchAlgorithmException {
+	public String createSHAHash(String input) {
 
-		String hashtext = null;
+		String hashtext = "";
+		try {
+			
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		byte[] messageDigest =
 		md.digest(input.getBytes(StandardCharsets.UTF_8));
 
 		hashtext = convertToHex(messageDigest);
+	
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		return hashtext;
 	}
 	private String convertToHex(final byte[] messageDigest) {
@@ -67,14 +73,20 @@ public class ConexionMysql {
 	}
 	   
 	
-	public boolean crearUsuario(Usuario user, boolean creado) throws NoSuchAlgorithmException{
+	public boolean crearUsuario(Usuario user, boolean creado) {
 		 PreparedStatement stmt;
 		try {
 			stmt = conexion.prepareStatement("insert into usuarios(nombre,apellidos,nick,contrasenia,correo) values(?,?,?,?,?)");
 			stmt.setString(1, user.getNombre());
 			stmt.setString(2, user.getApellidos());
 			stmt.setString(3, user.getNick());
-			stmt.setString(4, createSHAHash(user.getContrasenia()));
+			String pass = createSHAHash(user.getContrasenia());
+			if(pass != null) {
+
+			}else {
+			}
+			stmt.setString(4, pass);
+
 			stmt.setString(5, user.getCorreo());
 
 			stmt.executeUpdate();

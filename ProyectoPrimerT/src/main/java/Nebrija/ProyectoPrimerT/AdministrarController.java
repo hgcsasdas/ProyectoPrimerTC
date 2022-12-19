@@ -108,6 +108,7 @@ public class AdministrarController implements Initializable{
         alert.setTitle("Usuario");
         alert.setContentText("El usuario no se ha podido crear");
         alert.showAndWait();
+        ponerV();
     }
     @FXML
     private void mostrarAlertEliminacion(ActionEvent event) {
@@ -124,6 +125,7 @@ public class AdministrarController implements Initializable{
         alert.setTitle("Usuario");
         alert.setContentText("El usuario no se ha podido eliminar");
         alert.showAndWait();
+        ponerV();
     }
     
     @FXML
@@ -141,6 +143,7 @@ public class AdministrarController implements Initializable{
         alert.setTitle("Usuario");
         alert.setContentText("El usuario no se ha podido actualizar");
         alert.showAndWait();
+        ponerV();
     }
     
     @FXML
@@ -165,15 +168,22 @@ public class AdministrarController implements Initializable{
     @FXML
     void aniadirUsuario(/*ActionEvent event*/) throws NoSuchAlgorithmException {
     	ConexionMysql conexion = new ConexionMysql();
-    	boolean creado = false;
-    	crearUsuario();
-    	creado = conexion.crearUsuarioAdmin(c, creado);
+    	Usuario user = validar();
+
+    	if(creado){
+        	creado = conexion.crearUsuarioAdmin(user, creado);
+    	}else {
+    		System.out.println("sse ha validao");
+    	}    	
     	if(creado) {
+    		String u = "El usuario se ha creado con éxito";
     		mostrarAlertCreacion(null);
     	}else {
+    		String u = "El usuario no se ha podido crear";
     		mostrarAlertCreacionF(null);
     	}
-    	actualizarTabla();
+    	
+    	crearUsuario();
     }
     
     @FXML
@@ -219,7 +229,62 @@ public class AdministrarController implements Initializable{
     void irWeb(/*ActionEvent event*/) {
 
     }
+    public void ponerV() {
+    	apellidos.setStyle("-fx-text-box-border: #008000; -fx-focus-color: #008000;");
+    	nombre.setStyle("-fx-text-box-border: #008000; -fx-focus-color: #008000;");
+		nick.setStyle("-fx-text-box-border: #008000; -fx-focus-color: #008000;");
+		contrasenia.setStyle("-fx-text-box-border: #008000; -fx-focus-color: #008000;");
+    	correo.setStyle("-fx-text-box-border: #008000; -fx-focus-color: #008000;");
+
+    }
     
+    private boolean creado = false;
+    public Usuario validar() {
+    	Usuario user = new Usuario();
+    	
+			if(!nombre.getText().isEmpty()) {
+				user.setNombre(nombre.getText());
+			}else {
+				mostrarAlertCreacionF(null);
+				creado = false;
+	        	nombre.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+			}
+			if(!apellidos.getText().isEmpty()) {
+				user.setApellidos(apellidos.getText());
+			}else {
+				mostrarAlertCreacionF(null);
+				creado = false;
+	        	apellidos.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+			}
+			if(!nick.getText().isEmpty()) {
+				user.setNick(nick.getText());
+			}else {
+				mostrarAlertCreacionF(null);
+				creado = false;
+				nick.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+			}
+			if(!contrasenia.getText().isEmpty()) {
+				user.setContrasenia(contrasenia.getText());
+			}else {
+				mostrarAlertCreacionF(null);
+				creado = false;
+				contrasenia.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+			}
+			if(!correo.getText().isEmpty()) {
+				user.setCorreo(correo.getText());
+			}else {
+				mostrarAlertCreacionF(null);
+				creado = false;
+	        	correo.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+			}
+			if(permisos.isSelected() == true) {			
+				user.setPermisos("1");
+			}else {
+				user.setPermisos("0");
+			}
+			
+			return user;
+    }
     public void crearUsuario() {
     	System.out.println(apellidos.getText());
 		c.setApellidos(apellidos.getText());
